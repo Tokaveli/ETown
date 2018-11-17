@@ -1,5 +1,5 @@
 # ETown
-ASP .NET MVC Web Application
+Review the best places in your town.
 
 Following technologies stack being used:
 
