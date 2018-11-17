@@ -1,0 +1,87 @@
+﻿@model PagedList.IPagedList<Emiasto.Models.Facility>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Facilities";
+}
+
+<h2>Facilities</h2>
+
+@if (Context.User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+
+@using (Html.BeginForm("Index", "Facilities", FormMethod.Get))
+{
+    <p>
+        <div class="input-group" style="max-width: 350px;">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+            <span class="input-group-btn">
+                <input class="btn btn-default" style="border-left: none;" type="submit" value="Search">
+            </span>
+        </div>
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>
+            @Html.ActionLink(Html.DisplayNameFor(model => model.FirstOrDefault().Name).ToHtmlString(), "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink(Html.DisplayNameFor(model => model.FirstOrDefault().Category).ToHtmlString(), "Index", new { sortOrder = ViewBag.CategorySortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink(Html.DisplayNameFor(model => model.FirstOrDefault().Address).ToHtmlString(), "Index", new { sortOrder = ViewBag.AddressSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink(Html.DisplayNameFor(model => model.FirstOrDefault().Website).ToHtmlString(), "Index", new { sortOrder = ViewBag.WebsiteSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink(Html.DisplayNameFor(model => model.FirstOrDefault().Phone).ToHtmlString(), "Index", new { sortOrder = ViewBag.PhoneSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @if (@item.Images.Any())
+            {
+                <a href='@Url.Action("Details", "Facilities", new { id = item.Id })'>
+                    <img src="~/Images/@item.Images.FirstOrDefault().Image" height="100">
+                </a>
+            }
+        </td>
+        <td>
+            @Html.ActionLink(item.Name, "Details", new { id = item.Id })
+        </td>
+        <td>
+            @Html.ActionLink(item.Category.Name, "Index", "Facilities", new { SearchString = item.Category.Name }, null)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Website)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @if (Context.User.IsInRole("Admin")) { @Html.ActionLink("Edit", "Edit", new { id = item.Id }) @Html.Raw(" | ") }
+            @if (Context.User.IsInRole("Admin")) { @Html.ActionLink("Delete", "Delete", new { id = item.Id }) }
+        </td>
+    </tr>
+}
+
+</table>
+<br>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

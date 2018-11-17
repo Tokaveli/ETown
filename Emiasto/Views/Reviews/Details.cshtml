@@ -1,0 +1,110 @@
+﻿@model Emiasto.Models.Review
+
+@{
+    ViewBag.Title = Model.Text;
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Review</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Facility)
+        </dt>
+
+        <dd>
+            @Html.ActionLink(Model.Facility.Name, "Details", "Facilities", new { id = Model.Facility.Id }, null)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Fullname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rating)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Release)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Release)
+        </dd>
+
+        @if (Model.Images.Any())
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Images)
+            </dt>
+
+            <dd>
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Images.FirstOrDefault().Image)
+                        </th>
+                    </tr>
+
+                    @foreach (var image in Model.Images)
+                    {
+                        <tr>
+                            <td>
+                                <img src="~/Images/@image.Image" height="400">
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </dd>
+        }
+
+        @if (Model.Likes.Any())
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Likes)
+            </dt>
+
+            <dd>
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Likes.FirstOrDefault().User)
+                        </th>
+                    </tr>
+
+                    @foreach (var like in Model.Likes)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => like.User.Fullname)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

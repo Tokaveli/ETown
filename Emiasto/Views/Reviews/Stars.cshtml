@@ -1,0 +1,14 @@
+﻿@model Emiasto.Models.Review
+
+<fieldset class="rating">
+    <label class="full glyphicon glyphicon-star @if (Model.Rating == 5) { @Html.Raw("star-checked") }" title="Awesome - 5 stars"></label>
+    <label class="half glyphicon glyphicon-star @if (Model.Rating == 4.5) { @Html.Raw("star-checked") }" title="Pretty good - 4.5 stars"></label>
+    <label class="full glyphicon glyphicon-star @if (Model.Rating == 4) { @Html.Raw("star-checked") }" title="Pretty good - 4 stars"></label>
+    <label class="half glyphicon glyphicon-star @if (Model.Rating == 3.5) { @Html.Raw("star-checked") }" title="Meh - 3.5 stars"></label>
+    <label class="full glyphicon glyphicon-star @if (Model.Rating == 3) { @Html.Raw("star-checked") }" title="Meh - 3 stars"></label>
+    <label class="half glyphicon glyphicon-star @if (Model.Rating == 2.5) { @Html.Raw("star-checked") }" title="Kinda bad - 2.5 stars"></label>
+    <label class="full glyphicon glyphicon-star @if (Model.Rating == 2) { @Html.Raw("star-checked") }" title="Kinda bad - 2 stars"></label>
+    <label class="half glyphicon glyphicon-star @if (Model.Rating == 1.5) { @Html.Raw("star-checked") }" title="Meh - 1.5 stars"></label>
+    <label class="full glyphicon glyphicon-star @if (Model.Rating == 1) { @Html.Raw("star-checked") }" title="Sucks big time - 1 star"></label>
+    <label class="half glyphicon glyphicon-star @if (Model.Rating == 0.5) { @Html.Raw("star-checked") }" title="Sucks big time - 0.5 stars"></label>
+</fieldset>

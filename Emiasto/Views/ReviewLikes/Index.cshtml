@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Emiasto.Models.ReviewLike>
+
+@{
+    ViewBag.Title = "Review likes";
+}
+
+<h2>Review likes</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Review)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.Review.Text, "Details", "Reviews", new { id = item.Review.Id }, null)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Fullname)
+        </td>
+        <td>
+            @if (Context.User.IsInRole("Admin")) { @Html.ActionLink("Edit", "Edit", new { id = item.Id }) @Html.Raw(" | ") }
+            @Html.ActionLink("Details", "Details", new { id = item.Id })
+            @if (Context.User.IsInRole("Admin")) { @Html.Raw(" | ") @Html.ActionLink("Delete", "Delete", new { id = item.Id }) }
+        </td>
+    </tr>
+}
+
+</table>

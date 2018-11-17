@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Emiasto.ViewModels.ReleaseDateGroup>
+
+@{
+    ViewBag.Title = "Reviews Statistics";
+}
+
+<h2>Reviews Statistics</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Release Date
+        </th>
+        <th>
+            Reviews
+        </th>
+        <th></th><th></th><th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @item.ReviewCount
+            </td>
+            <td></td><td></td><td></td>
+        </tr>
+    }
+</table>
+
+@using (Html.BeginForm("SendMail", "Home", FormMethod.Post))
+{
+    <p>Wyślij raport na maila:</p>
+    <p>
+        <div class="input-group" style="max-width: 300px;">
+            @Html.TextBox("receiver", null, new { @class = "form-control", placeholder = "Adres e-mail" })
+            <span class="input-group-btn">
+                <input class="btn btn-default" style="border-left: none;" type="submit" value="Wyślij">
+            </span>
+        </div>
+    </p>
+}

@@ -1,0 +1,223 @@
+﻿@model Emiasto.Models.Facility
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Facility</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+
+        <dd>
+            @Html.ActionLink(Model.Category.Name, "Index", "Facilities", new { SearchString = Model.Category.Name }, null)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Website)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Website)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        @if (Model.Images.Any())
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Images)
+            </dt>
+
+            <dd>
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        @{int i = 0;}
+                        @foreach (var image in Model.Images)
+                        {
+                            <li data-target="#carousel-example-generic" data-slide-to="@i" class="@if (i == 0) { @Html.Raw("active") }"></li>
+                            ++i;
+                        }
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        @{i = 0;}
+                        @foreach (var image in Model.Images)
+                        {
+                            <div class="item @if (i == 0) { @Html.Raw("active") } ">
+                               <img src="~/Images/@image.Image" height="400">
+                            </div>
+                            ++i;
+                        }
+                    </div>
+
+                    <!-- Controls -->
+                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </dd>
+        }
+
+        @if (Model.Reviews.Any())
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Reviews)
+            </dt>
+
+            <dd>
+                <table class="table">
+                    <tr></tr>
+                        @{int j = 0;}
+                        @foreach (var review in Model.Reviews)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@Html.DisplayFor(model => review.User.Fullname)</strong>
+                                    <p>
+                                        @Html.Partial("../Reviews/Stars", review)
+                                        <div class="review-release">@Html.DisplayFor(model => review.Release)</div>
+
+                                        @if (Request.IsAuthenticated)
+                                        {
+                                            if (review.Likes.Where(like => like.User.UserName == User.Identity.Name).Any())
+                                            {
+                                                <div class="glyphicon glyphicon-heart like liked" aria-hidden="true" title="Polubione"></div>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("Like", "ReviewLikes", new { id = review.Id, ReviewId = review.Id, UserId = User.Identity.Name, FacilityId = Model.Id })">
+                                                    <div class="glyphicon glyphicon-heart-empty like" aria-hidden="true" title="Lubię to!"></div>
+                                                </a>
+                                            }
+                                        }
+                                    </p>
+                                    <p class="review-text">@Html.DisplayFor(model => review.Text)</p>
+
+                                    @if (review.Images.Any())
+                                    {
+                                        foreach (var reviewImage in review.Images)
+                                        {
+                                            <span data-toggle="modal" data-target="@Html.Raw("#myModal" + j)" style="cursor: pointer">
+                                                <img src="~/Images/@reviewImage.Image" height="100">
+                                            </span>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="@Html.Raw("myModal" + j)" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <img src="~/Images/@reviewImage.Image" width="540">
+                                                            Dodane przez: @review.User.Fullname
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ++j;
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    <tr>
+                        <td>
+                            <div id="carousel-reviews-generic" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    @{int i = 0;}
+                                    @foreach (var review2 in Model.Reviews)
+                                    {
+                                        if (review2.Images.Any())
+                                        {
+                                            foreach (var reviewImage2 in review2.Images)
+                                            {
+                                                <li data-target="#carousel-reviews-generic" data-slide-to="@i" class="@if (i == 0) { @Html.Raw("active") }"></li>
+                                                ++i;
+                                            }
+                                        }
+                                    }
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    @{i = 0;}
+                                    @foreach (var review2 in Model.Reviews)
+                                    {
+                                        if (review2.Images.Any())
+                                        {
+                                            foreach (var reviewImage2 in review2.Images)
+                                            {
+                                                <div class="item @if (i == 0) { @Html.Raw("active") } ">
+                                                    <img src="~/Images/@reviewImage2.Image" height="400">
+
+                                                    <div class="carousel-caption">
+                                                        Dodane przez: @review2.User.Fullname
+                                                    </div>
+                                                </div>
+                                                ++i;
+                                            }
+                                        }
+                                    }
+                                </div>
+
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel-reviews-generic" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-reviews-generic" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @if (Context.User.IsInRole("Admin")) { @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @Html.Raw(" | ") }
+    @Html.ActionLink("Back to List", "Index")
+</p>
