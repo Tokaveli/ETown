@@ -1,5 +1,5 @@
 # ETown
-Review the best places in your town.
+Review the best places in your town!
 
 Following technologies stack being used:
 
